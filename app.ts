@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
-
+require('dotenv').config()
+require("./connection")
 const app = express();
 const port = 3000;
 
