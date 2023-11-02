@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 async function connectToDatabase() {
-   let DB_URI = 'mongodb://localhost:27017/FilmographyDB'
+   let DB_URI = 'mongodb://localhost:27017/filmographyDB'
   if(process.env.DB_URI) DB_URI = process.env.DB_URI 
 
   try {

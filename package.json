@@ -2,10 +2,10 @@
   "name": "challenge",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc && node ./dist/app.js"
+    "start": "tsc-watch --onSuccess \"node dist/app.js\""
   },
   "author": "",
   "license": "ISC",
@@ -15,5 +15,8 @@
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "mongoose": "^8.0.0"
+  },
+  "devDependencies": {
+    "tsc-watch": "^6.0.4"
   }
 }
