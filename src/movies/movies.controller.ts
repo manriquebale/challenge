@@ -47,10 +47,13 @@ export const create = async (req: Request, res: Response, next: NextFunction) =>
 
         if (director && director.name) {
             directorDocument = await Director.findOne({ name: director.name });
-
+            const { nationality, biography, dateOfBirth } = director
             if (!directorDocument) {
                 directorDocument = new Director({
                     name: director.name,
+                    nationality: nationality,
+                    biography: biography,
+                    dateOfBirth: dateOfBirth
                 });
                 directorDocument = await directorDocument.save();
             }
@@ -71,12 +74,12 @@ export const create = async (req: Request, res: Response, next: NextFunction) =>
                 actorDocuments.push(actorDocument._id);
             }
         }
-        
+
         const newMovie = new Movie({
             title,
             year,
             director: directorDocument ? directorDocument._id : undefined,
-            actors
+            actors: actorDocuments,
         });
 
         const movie = await newMovie.save();
