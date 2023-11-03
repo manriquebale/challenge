@@ -11,6 +11,10 @@ export const signUp = async (req: Request, res: Response, next: NextFunction) =>
             email,
             password,
         });
+
+        const userDB = await User.findOne({ email: req.body.email });
+        if(userDB) return res.status(500).json('This email is already registered');
+
         if (await user.savePassword() === false) {
             return res.status(400).json({
                 message: 'Error saving password'
@@ -38,8 +42,32 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         const token: string = jwt.sign({ sub: user._id }, process.env.JWT_SECRET || '', {
             expiresIn: process.env.JWT_EXPIRATION,
         });
-        console.log(token)
+        const refreshToken = jwt.sign({ sub: user._id }, process.env.JWT_REFRESH_TOKEN_SECRET || '');
+        user.refreshToken = refreshToken;
+        await user.save();
         return res.header('auth-token', token).json({ user, token });
     } catch (error) { return next(error); }
 }
 
+
+export const refreshAccessToken = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const refreshToken = req.body.refreshToken; 
+        
+        const user = await User.findOne({ refreshToken });
+
+        if (!user) {
+            return res.status(401).json({
+                message: 'Unauthorized'
+            });
+        }
+
+        const token: string = jwt.sign({ sub: user._id }, process.env.JWT_SECRET || '', {
+            expiresIn: process.env.JWT_EXPIRATION,
+        });
+
+        return res.json({ token });
+    } catch (error) {
+        return next(error);
+    }
+};

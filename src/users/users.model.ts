@@ -18,7 +18,7 @@ const UserSchema = new Schema<IUser>({
         type: String,
         required: [true, 'Password is required']
     },
-    refreshTokens: [String],
+    refreshToken: String,
 }, {
     timestamps: { createdAt: true, updatedAt: true }
 })
