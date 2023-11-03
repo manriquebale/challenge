@@ -7,6 +7,10 @@ const DirectorSchema = new Schema<IDirector>({
         type: String,
         required: [true, 'Obligatory name']
     },
+    dateOfBirth: Date,
+    nationality: String,
+    biography: String,
+    movies: [{ type: Schema.Types.ObjectId, ref: 'Movie' }]
 },{
         timestamps: { createdAt: true, updatedAt: true }
 })

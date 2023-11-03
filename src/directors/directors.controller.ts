@@ -22,3 +22,19 @@ export const show = async (req: Request, res: Response, next: NextFunction) => {
         return next(error);
     }
 };
+
+export const create = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { name, dateOfBirth, nationality, biography } = req.body;
+        const newDirector = new Director({
+            name,
+            dateOfBirth,
+            nationality,
+            biography
+        });
+        const director = await newDirector.save();
+        return res.status(201).json(director);
+    } catch (error) {
+        return next(error);
+    }
+};
