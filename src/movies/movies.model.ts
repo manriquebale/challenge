@@ -5,7 +5,7 @@ import  IMovie from "./movies.interface"
 const MovieSchema = new Schema<IMovie>({
     title: {
         type: String,
-        required: [true, 'Obligatory name'] 
+        required: [true, 'The title is mandatory'] 
     },
     year: {
         type: Number,
