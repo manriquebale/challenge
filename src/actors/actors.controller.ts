@@ -9,3 +9,20 @@ export const index = async (req: Request, res: Response, next: NextFunction) => 
         return next(error);
     }
 };
+
+
+export const create = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { name, dateOfBirth, nationality, biography } = req.body;
+        const newActor = new Actor({
+            name,
+            dateOfBirth,
+            nationality,
+            biography
+        });
+        const actor = await newActor.save();
+        return res.status(201).json(actor);
+    } catch (error) {
+        return next(error);
+    }
+};

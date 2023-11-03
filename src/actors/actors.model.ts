@@ -7,6 +7,9 @@ const ActorSchema = new Schema<IActor>({
         type: String,
         required: [true, 'Obligatory name']
     },
+    dateOfBirth: Date,
+    nationality: String,
+    biography: String,
 },{
         timestamps: { createdAt: true, updatedAt: true }
 })
