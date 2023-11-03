@@ -1,13 +1,27 @@
 import express, { Request, Response } from 'express';
+const { marked } = require('marked');
+const fs = require("fs");
+
 require('dotenv').config()
 require("./connection")
+
 const app = express();
-const port = 3000;
 app.use(express.json());
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('¡Trying routes!');
+const port = process.env.PORT || 3000;
+
+
+app.get('/', function (req, res) {
+  var readme = 'README.md';
+  var output = fs.readFileSync(readme, 'utf8');
+  res.send(marked(output.toString()));
 });
+
+var authRoutes = require('./src/auth/auth.routes');
+app.use('/auth', authRoutes);
+
+var usersRoutes = require('./src/users/users.routes');
+app.use('/users', usersRoutes);
 
 var moviesRoutes = require('./src/movies/movies.routes');
 app.use('/movies', moviesRoutes);
