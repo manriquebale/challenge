@@ -15,13 +15,13 @@ export const index = async (req: Request, res: Response, next: NextFunction) => 
       query.title = { $regex: title, $options: 'i' };
     }
 
-     const sortOptions: { [key: string]: SortOrder } = {};
+    const sortOptions: { [key: string]: SortOrder } = {};
 
-        if (sortBy) {
-            sortOptions[sortBy] = sortOrder;
-        }
+    if (sortBy) {
+      sortOptions[sortBy] = sortOrder;
+    }
 
-    const movies = await Movie.find(query).sort(sortOptions);
+    const movies = await Movie.find(query).sort(sortOptions).populate('director').populate('actors');
     return res.status(200).json(movies);
   } catch (error) {
     return next(error);

@@ -4,7 +4,7 @@ import * as actorController from './actors.controller'
 
 const router = Router();
 
-router.get('/',  actorController.index);
-router.post('/',  actorController.create);
+router.get('/', actorController.index);
+router.post('/', actorController.create);
 
 module.exports = router

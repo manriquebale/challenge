@@ -4,8 +4,8 @@ import * as directorController from './directors.controller'
 
 const router = Router();
 
-router.get('/',  directorController.index);
-router.get('/:id',  directorController.show);
-router.post('/',  directorController.create);
+router.get('/', directorController.index);
+router.get('/:id', directorController.show);
+router.post('/', directorController.create);
 
 module.exports = router

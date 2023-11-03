@@ -8,8 +8,8 @@ const router = Router();
 //router.get('/:id', authMiddleware, movieController.show);
 //router.delete('/:id', authMiddleware, movieController.destroy);
 
-router.get('/',  movieController.index);
-router.get('/:id',  movieController.show);
-router.post('/',  movieController.create);
+router.get('/', movieController.index);
+router.get('/:id', movieController.show);
+router.post('/', movieController.create);
 
 module.exports = router

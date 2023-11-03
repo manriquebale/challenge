@@ -19,8 +19,8 @@ const UserSchema = new Schema<IUser>({
         required: [true, 'Password is required']
     },
     refreshTokens: [String],
-},{
-        timestamps: { createdAt: true, updatedAt: true }
+}, {
+    timestamps: { createdAt: true, updatedAt: true }
 })
 
 UserSchema.methods.savePassword = async function savePassword(): Promise<boolean> {
@@ -32,8 +32,8 @@ UserSchema.methods.savePassword = async function savePassword(): Promise<boolean
 
 UserSchema.methods.validatePassword = function validatePassword(
     password: string,
-  ): Promise<boolean> {
+): Promise<boolean> {
     return bcrypt.compare(password, (this as any).password);
-  };
+};
 
 export default model<IUser>('User', UserSchema)

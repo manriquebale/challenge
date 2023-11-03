@@ -1,14 +1,31 @@
+import { Schema, model } from "mongoose";
+import IShow from "./shows.interface";
 
-import { Schema, model } from 'mongoose';
-import  IShow from "./shows.interface"  
+const episodeSchema = new Schema({
+  title: String,
+  director: { type: Schema.Types.ObjectId, ref: "Director" },
 
-const ShowSchema = new Schema<IShow>({
-    name: {
-        type: String,
-        required: [true, 'Obligatory name']
+});
+
+const seasonSchema = new Schema({
+  title: String,
+  episodes: [episodeSchema],
+});
+
+const ShowSchema = new Schema<IShow>(
+  {
+    title: {
+      type: String,
+      required: [true, "The title is mandatory"],
     },
-},{
-        timestamps: { createdAt: true, updatedAt: true }
-})
-export default model<IShow>('Show', ShowSchema)
-
+    genre: String,
+    year: Number,
+    plot: String,
+       actors: [{ type: Schema.Types.ObjectId, ref: "Actor" }],
+    seasons: [seasonSchema],
+  },
+  {
+    timestamps: { createdAt: true, updatedAt: true },
+  }
+);
+export default model<IShow>("Show", ShowSchema);

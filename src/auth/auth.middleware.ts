@@ -16,7 +16,7 @@ export const authMiddleware = async (req: CustomRequest, res: Response, next: Ne
 
     req.token = req.headers.authorization.split(' ')[1];
     const decoded = jwt.verify(req.token, process.env.JWT_SECRET || '') as any;
-    
+
     if (!decoded) return next(res.status(401).json({
       message: 'Unauthorized'
     }));

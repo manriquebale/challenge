@@ -1,6 +1,20 @@
 
-import { Document } from 'mongoose'
+import { Document, Schema } from 'mongoose'
 
 export default interface IShows  extends Document {
-    name: string;
+    title: string;
+    genre: string;
+    year: number;
+    plot: string;
+    actors: (Schema.Types.ObjectId | string)[];
+    seasons: Season[];
 }
+
+interface Season {
+    title: string;
+    episodes: Episode[];
+  }
+  
+  interface Episode {
+    title: string;
+  }

@@ -1,6 +1,6 @@
 
 import { Schema, model } from 'mongoose';
-import  IDirector from "./directors.interface"  
+import IDirector from "./directors.interface"
 
 const DirectorSchema = new Schema<IDirector>({
     name: {
@@ -11,8 +11,8 @@ const DirectorSchema = new Schema<IDirector>({
     nationality: String,
     biography: String,
     movies: [{ type: Schema.Types.ObjectId, ref: 'Movie' }]
-},{
-        timestamps: { createdAt: true, updatedAt: true }
+}, {
+    timestamps: { createdAt: true, updatedAt: true }
 })
 export default model<IDirector>('Director', DirectorSchema)
 
