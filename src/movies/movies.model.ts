@@ -10,9 +10,8 @@ const MovieSchema = new Schema<IMovie>({
     year: {
         type: Number,
     },
-    director: String,
-    other: String
-
+    director: { type: Schema.Types.ObjectId, ref: 'Director' },
+    actors: [{ type: Schema.Types.ObjectId, ref: 'Actor' }]
 },{
         timestamps: { createdAt: true, updatedAt: true }
 })

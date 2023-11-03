@@ -10,4 +10,6 @@ const router = Router();
 
 router.get('/',  movieController.index);
 router.get('/:id',  movieController.show);
+router.post('/',  movieController.create);
+
 module.exports = router

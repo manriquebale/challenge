@@ -1,8 +1,8 @@
-import { Document } from 'mongoose'
+import { Document, Schema } from 'mongoose'
 
 export default interface IMovie  extends Document {
     title: string;
-    director: string;
     year: number;
-    other: string;
+    director: Schema.Types.ObjectId | string;
+    actors: (Schema.Types.ObjectId | string)[]; 
 }
