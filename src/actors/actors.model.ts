@@ -5,7 +5,7 @@ import  IActor from "./actors.interface"
 const ActorSchema = new Schema<IActor>({
     name: {
         type: String,
-        required: [true, 'Obligatory name']
+        required: [true, 'The name is mandatory']
     },
     dateOfBirth: Date,
     nationality: String,
