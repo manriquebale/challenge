@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import e, { Request, Response, NextFunction } from "express";
 import Show from "./shows.model";
 import Director from "../directors/directors.model";
 import Actor from "../actors/actors.model";
@@ -15,7 +15,7 @@ export const index = async (req: Request, res: Response, next: NextFunction) => 
 export const show = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
-        const show = await Show.findById(id);
+        const show = await Show.findById(id).populate('actors');
         if (show === null) return next(res.status(404).json({
             message: 'Show not found'
         }))
@@ -56,13 +56,26 @@ export const create = async (req: Request, res: Response, next: NextFunction) =>
         const seasonsAndEpisodes = [];
         if (seasons && seasons.length > 0) {
             for (const season of seasons) {
-                const episodes = season.episodes.map((episode: any) => {
+                const episodePromises = season.episodes.map(async (e: any) => {
+                    let directorDocument;
+                    if (e.director && e.director.name) {
+                        directorDocument = await Director.findOne({ name: e.director.name });
+                    }
 
+                    if (!directorDocument) {
+                        directorDocument = new Director({
+                            name: e.director.name
+                        });
+                        directorDocument = await directorDocument.save();
+                    }
                     return {
-                      title: episode.title,
-                      director: episode.director,
+                        title: e.title,
+                        director: directorDocument
                     };
-                  });
+                });
+
+                const episodes = await Promise.all(episodePromises);
+
                 seasonsAndEpisodes.push({
                     title: season.title,
                     episodes,
@@ -90,7 +103,7 @@ export const create = async (req: Request, res: Response, next: NextFunction) =>
 export const getEpisode = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { idShow, idEpisode } = req.params;
-        
+
         const show = await Show.findById(idShow);
 
         if (!show) {
@@ -99,9 +112,10 @@ export const getEpisode = async (req: Request, res: Response, next: NextFunction
             });
         }
 
-        let episode = null;
+        let episode: any;
         show.seasons.forEach((season) => {
             const foundEpisode = season.episodes.find(ep => ep._id.toString() === idEpisode);
+
             if (foundEpisode) {
                 episode = foundEpisode;
             }
@@ -113,7 +127,16 @@ export const getEpisode = async (req: Request, res: Response, next: NextFunction
             });
         }
 
-        return res.status(200).json(episode);
+        let director;
+        if (episode && episode.director) {
+            const directorId = episode.director;
+            director = await Director.findById(directorId);
+            episode.director = director
+        }
+
+        return res.status(200).json({
+            episode: episode
+        });
     } catch (error) {
         return next(error);
     }
