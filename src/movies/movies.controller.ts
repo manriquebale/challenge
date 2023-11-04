@@ -83,6 +83,10 @@ export const create = async (req: Request, res: Response, next: NextFunction) =>
       actors: actorDocuments,
     });
     const movie = await newMovie.save();
+    if (directorDocument) {
+      directorDocument.movies.push(movie._id)
+      await directorDocument.save();
+    }
     return res.status(201).json(movie);
   } catch (error) {
     return next(error);
