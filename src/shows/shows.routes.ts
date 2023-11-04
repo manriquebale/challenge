@@ -7,5 +7,6 @@ const router = Router();
 router.get('/',  showController.index);
 router.get('/:id',  showController.show);
 router.post('/',  showController.create);
+router.get('/:idShow/episodes/:idEpisode',  showController.getEpisode);
 
 module.exports = router

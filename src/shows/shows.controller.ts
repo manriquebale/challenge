@@ -85,3 +85,36 @@ export const create = async (req: Request, res: Response, next: NextFunction) =>
         return next(error);
     }
 };
+
+
+export const getEpisode = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { idShow, idEpisode } = req.params;
+        
+        const show = await Show.findById(idShow);
+
+        if (!show) {
+            return res.status(404).json({
+                message: 'Show not found'
+            });
+        }
+
+        let episode = null;
+        show.seasons.forEach((season) => {
+            const foundEpisode = season.episodes.find(ep => ep._id.toString() === idEpisode);
+            if (foundEpisode) {
+                episode = foundEpisode;
+            }
+        });
+
+        if (!episode) {
+            return res.status(404).json({
+                message: 'Episode not found'
+            });
+        }
+
+        return res.status(200).json(episode);
+    } catch (error) {
+        return next(error);
+    }
+};

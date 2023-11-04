@@ -16,5 +16,6 @@ interface Season {
   }
   
   interface Episode {
+    _id: any;
     title: string;
   }
