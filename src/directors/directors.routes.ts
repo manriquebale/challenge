@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import * as directorController from './directors.controller'
-//import { authMiddleware } from '../auth/auth.middleware';
+import { authMiddleware } from '../auth/auth.middleware';
 
 const router = Router();
 
-router.get('/', directorController.index);
-router.get('/:id', directorController.show);
-router.post('/', directorController.create);
+router.get('/', authMiddleware, directorController.index);
+router.get('/:id', authMiddleware, directorController.show);
+router.post('/', authMiddleware, directorController.create);
 
 module.exports = router

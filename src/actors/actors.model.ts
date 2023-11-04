@@ -10,6 +10,7 @@ const ActorSchema = new Schema<IActor>({
     dateOfBirth: Date,
     nationality: String,
     biography: String,
+    movies: [{ type: Schema.Types.ObjectId, ref: 'Movie' }]
 }, {
     timestamps: { createdAt: true, updatedAt: true }
 })

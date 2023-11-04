@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import * as actorController from './actors.controller'
-//import { authMiddleware } from '../auth/auth.middleware';
+import { authMiddleware } from '../auth/auth.middleware';
 
 const router = Router();
 
-router.get('/', actorController.index);
-router.post('/', actorController.create);
+router.get('/', authMiddleware, actorController.index);
+router.post('/', authMiddleware, actorController.create);
 
 module.exports = router

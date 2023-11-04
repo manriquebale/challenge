@@ -61,6 +61,7 @@ export const create = async (req: Request, res: Response, next: NextFunction) =>
     }
 
     const actorDocuments = [];
+    const actorsObjects = [];
     if (actors && actors.length > 0) {
       for (const actorName of actors) {
         let actorDocument = await Actor.findOne({ name: actorName });
@@ -73,6 +74,8 @@ export const create = async (req: Request, res: Response, next: NextFunction) =>
           actorDocument = await actorDocument.save();
         }
         actorDocuments.push(actorDocument._id);
+        actorsObjects.push(actorDocument);
+
       }
     }
 
@@ -87,6 +90,12 @@ export const create = async (req: Request, res: Response, next: NextFunction) =>
       directorDocument.movies.push(movie._id)
       await directorDocument.save();
     }
+
+    for (const actor of actorsObjects) {
+      actor.movies.push(movie._id);
+      await actor.save();
+    }
+
     return res.status(201).json(movie);
   } catch (error) {
     return next(error);
