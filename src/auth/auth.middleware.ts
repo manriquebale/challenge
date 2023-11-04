@@ -20,9 +20,8 @@ export const authMiddleware = async (req: CustomRequest, res: Response, next: Ne
     if (!decoded) return next(res.status(401).json({
       message: 'Unauthorized'
     }));
-
+    
     const user = await User.findById(decoded.sub);
-
     if (user === null) return next(res.status(404).json({
       message: 'Not found'
     }))

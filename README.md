@@ -25,9 +25,8 @@ Create a .env file in the project's root with the appropriate configuration. Her
 
 - DB_URI = 'mongodb://localhost:27017/filmographyDB'
 - JWT_EXPIRATION = 5d
-- JWT_SECRET =  'enterprise'
+- JWT_SECRET =  'secret'
 - PORT = 3000
-
 4. **Usage**
 To run the application, use the following command:
 

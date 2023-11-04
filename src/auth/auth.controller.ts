@@ -38,12 +38,9 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
             return res.status(401).json({
                 message: 'Invalid data'
             });
-
         const token: string = jwt.sign({ sub: user._id }, process.env.JWT_SECRET || '', {
             expiresIn: process.env.JWT_EXPIRATION,
         });
-        const refreshToken = jwt.sign({ sub: user._id }, process.env.JWT_REFRESH_TOKEN_SECRET || '');
-        user.refreshToken = refreshToken;
         await user.save();
         return res.header('auth-token', token).json({ user, token });
     } catch (error) { return next(error); }
@@ -52,21 +49,18 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 
 export const refreshAccessToken = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const refreshToken = req.body.refreshToken; 
-        
-        const user = await User.findOne({ refreshToken });
-
-        if (!user) {
-            return res.status(401).json({
-                message: 'Unauthorized'
-            });
+        let decoded: any; 
+        if(req.headers.authorization)
+        {
+            const token = req.headers.authorization.split(' ')[1] || ''; 
+            decoded = jwt.decode(token)
         }
 
-        const token: string = jwt.sign({ sub: user._id }, process.env.JWT_SECRET || '', {
+        const token: string = jwt.sign({ sub: decoded._id }, process.env.JWT_SECRET || '', {
             expiresIn: process.env.JWT_EXPIRATION,
         });
 
-        return res.json({ token });
+        return res.status(200).json({ token });
     } catch (error) {
         return next(error);
     }
